@@ -36,7 +36,9 @@ class DoorEnv(mujoco_env.MujocoEnv, utils.EzPickle):
                 self.all_joints = self.nn + 2
                 self.gripper_action = np.zeros(2)
         else:
-            if self.xml_path.find("float")>-1:
+            if self.xml_path.find("hsr") > -1:
+                self.nn = 27
+            elif self.xml_path.find("float")>-1:
                 if self.xml_path.find("hook")>-1:
                     self.nn = 6
                 if self.xml_path.find("gripper")>-1:
@@ -190,6 +192,8 @@ class DoorEnv(mujoco_env.MujocoEnv, utils.EzPickle):
                 qpos[17] =  0.00 #+ random.uniform( 0, 0.02)    # robotfinger_actuator_joint_l
                 qpos[18] =  0.00 #+ random.uniform(-0.02, 0)    # l_gripper_l_finger_joint
                 qpos[19] =  0.00 #+ random.uniform( 0, 0.02)    # l_gripper_r_finger_joint
+        elif self.xml_path.find("hsr") > -1:
+            qpos = self.init_qpos
         elif self.xml_path.find("float")>-1:
             qpos = self.np_random.uniform(low=-0.3, high=0.3, size=self.model.nq) + self.init_qpos
             if self.xml_path.find("hook")>-1:
@@ -432,6 +436,9 @@ class DoorEnv(mujoco_env.MujocoEnv, utils.EzPickle):
             else:
                 return (self.sim.data.get_body_xpos("r_gripper_l_finger_tip") \
                     + self.sim.data.get_body_xpos("r_gripper_r_finger_tip"))/2.0
+        elif self.xml_path.find('hsr') > -1:
+            return (self.sim.data.get_body_xpos("hand_l_mimic_distal_link") \
+                    + self.sim.data.get_body_xpos("hand_r_mimic_distal_link"))/2.0
         else:
             assert "not sure about the end-effector type"
 
@@ -449,6 +456,8 @@ class DoorEnv(mujoco_env.MujocoEnv, utils.EzPickle):
                 return quat2euler(self.sim.data.get_body_xquat("left_wrist"))
             else:
                 return quat2euler(self.sim.data.get_body_xquat("right_wrist"))
+        elif self.xml_path.find("hsr") > -1:
+            return quat2euler(self.sim.data.get_body_xquat("wrist_flex_link"))
         else:
             assert "not sure about the end-effector type"
     
@@ -462,6 +471,8 @@ class DoorEnv(mujoco_env.MujocoEnv, utils.EzPickle):
                 return self.sim.data.get_body_xquat("left_wrist")
             else:
                 return self.sim.data.get_body_xquat("right_wrist")
+        elif self.xml_path.find("hsr") > -1:
+            return self.sim.data.get_body_xquat("wrist_flex_link")
         else:
             assert "not sure about the end-effector type"
 
