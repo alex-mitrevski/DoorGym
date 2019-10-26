@@ -101,7 +101,10 @@
                                 <joint name="wrist_roll_joint" pos="0 0 0" axis="0 0 1" limited="true" range="-1.92 3.67" damping="1" />
                                 <body name="wrist_ft_sensor_frame" pos="0 0 0.0735" quat="0 1 0 0">
                                     <inertial pos="0.000192679 0.0012513 -0.0186234" quat="0.931239 -0.00517143 -0.0292254 0.363198" mass="0.941692" diaginertia="0.0193002 0.0192663 0.0184886" />
-                                    <joint name="wrist_ft_sensor_frame_joint" pos="0 0 0" axis="1 0 0" range="-3.14 3.14" />
+
+                                    <!-- The following joint needs to have high stiffness; otherwise, it causes the wrist to fall unnaturally along the y-axis of the base frame --> 
+                                    <joint name="wrist_ft_sensor_frame_joint" pos="0 0 0" axis="1 0 0" range="-3.14 3.14" stiffness="100" />
+
                                     <geom pos="0 0 0.0735" quat="0 -1 0 0" type="mesh" mesh="wrist_roll" />
                                     <geom pos="0.012 0 -0.067" quat="0 0 1 0" type="mesh" mesh="palm" />
                                     <body name="hand_motor_dummy_link" pos="0.012 0 -0.067" quat="0 0 1 0">
@@ -110,17 +113,17 @@
                                     </body>
                                     <body name="hand_l_proximal_link" pos="0.02875 -0.0245 -0.0495" quat="0 0 1 0">
                                         <inertial pos="0 0 0" mass="0.01" diaginertia="0.0015 0.0015 0.0015" />
-                                        <joint name="hand_l_proximal_joint" pos="0 0 0" axis="1 0 0" limited="true" range="-0.798 1.24" damping="0.0001" />
+                                        <joint name="hand_l_proximal_joint" pos="0 0 0" axis="1 0 0" limited="true" range="0 1.24" damping="0.0001" stiffness="1.0" />
                                         <body name="hand_l_spring_proximal_link" pos="0 0 0">
                                             <inertial pos="0.021418 0.00248 0.022688" quat="0.701927 0.0145759 0.051882 0.710208" mass="0.043589" diaginertia="2.88931e-05 2.62201e-05 4.88149e-06" />
-                                            <joint name="hand_l_spring_proximal_joint" pos="0 0 0" axis="1 0 0" limited="true" range="0 0.698" damping="0.0001" />
+                                            <joint name="hand_l_spring_proximal_joint" pos="0 0 0" axis="1 0 0" limited="true" range="0 0.698" damping="0.0001" stiffness="1.0" />
                                             <geom type="mesh" mesh="l_proximal" />
                                             <body name="hand_l_mimic_distal_link" pos="0 0 0.07">
                                                 <inertial pos="0 0 0" mass="0.01" diaginertia="0.0015 0.0015 0.0015" />
-                                                <joint name="hand_l_mimic_distal_joint" pos="0 0 0" axis="1 0 0" limited="true" range="-0.698 0" damping="0.0001" />
+                                                <joint name="hand_l_mimic_distal_joint" pos="0 0 0" axis="1 0 0" limited="true" range="-0.698 0" damping="0.0001" stiffness="1.0" />
                                                 <body name="hand_l_distal_link" pos="0 0 0">
                                                     <inertial pos="0.0109626 0.00478922 0.0261314" quat="0.910181 -0.370475 0.0796206 -0.16727" mass="0.047731" diaginertia="0.00301383 0.00300955 0.00300742" />
-                                                    <joint name="hand_l_distal_joint" pos="0 0 0" axis="1 0 0" limited="true" range="-1.24 0.798" damping="0.0001" />
+                                                    <joint name="hand_l_distal_joint" pos="0 0 0" axis="1 0 0" limited="true" range="-1.24 0.798" damping="0.0001" stiffness="1.0" />
                                                     <geom type="mesh" mesh="l_distal" />
                                                 </body>
                                             </body>
@@ -128,17 +131,17 @@
                                     </body>
                                     <body name="hand_r_proximal_link" pos="0.02875 0.0245 -0.0495" quat="0 0 1 0">
                                         <inertial pos="0 0 0" mass="0.01" diaginertia="0.0015 0.0015 0.0015" />
-                                        <joint name="hand_r_proximal_joint" pos="0 0 0" axis="-1 0 0" limited="true" range="-0.798 1.24" damping="0.0001" />
+                                        <joint name="hand_r_proximal_joint" pos="0 0 0" axis="-1 0 0" limited="true" range="0 1.24" damping="0.0001" stiffness="1.0" />
                                         <body name="hand_r_spring_proximal_link" pos="0 0 0">
                                             <inertial pos="0.013203 0.002096 0.023311" quat="0.696227 -0.0447896 0.0033388 0.716415" mass="0.043956" diaginertia="2.89497e-05 2.63111e-05 4.7712e-06" />
-                                            <joint name="hand_r_spring_proximal_joint" pos="0 0 0" axis="-1 0 0" limited="true" range="0 0.698" damping="0.0001" />
+                                            <joint name="hand_r_spring_proximal_joint" pos="0 0 0" axis="-1 0 0" limited="true" range="0 0.698" damping="0.0001" stiffness="1.0" />
                                             <geom type="mesh" mesh="r_proximal" />
                                             <body name="hand_r_mimic_distal_link" pos="0 0 0.07">
                                                 <inertial pos="0 0 0" mass="0.01" diaginertia="0.0015 0.0015 0.0015" />
-                                                <joint name="hand_r_mimic_distal_joint" pos="0 0 0" axis="-1 0 0" limited="true" range="-0.698 0" damping="0.0001" />
+                                                <joint name="hand_r_mimic_distal_joint" pos="0 0 0" axis="-1 0 0" limited="true" range="-0.698 0" damping="0.0001" stiffness="1.0" />
                                                 <body name="hand_r_distal_link" pos="0 0 0">
                                                     <inertial pos="0.0150624 -0.0116608 0.0244179" quat="0.67461 0.159192 -0.114484 0.711655" mass="0.030927" diaginertia="0.00151029 0.00150887 0.00150241" />
-                                                    <joint name="hand_r_distal_joint" pos="0 0 0" axis="-1 0 0" limited="true" range="-1.24 0.798" damping="0.0001" />
+                                                    <joint name="hand_r_distal_joint" pos="0 0 0" axis="-1 0 0" limited="true" range="-1.24 0.798" damping="0.0001" stiffness="1.0" />
                                                     <geom type="mesh" mesh="r_distal" />
                                                 </body>
                                             </body>
@@ -161,6 +164,25 @@
     </default>
 
     <actuator>
-      <motor name="armflexctrl" gear="35" joint="arm_flex_joint" />
+      <position name="armflexctrl_pos" kp="35" ctrllimited="true" ctrlrange="-2.617 0" gear="1" joint="arm_flex_joint" />
+      <velocity name="armflexctrl_vel" kv="35" ctrllimited="true" ctrlrange="-1.0 1.0" gear="1" joint="arm_flex_joint" />
+
+      <position name="armliftctrl_pos" kp="120" ctrllimited="true" ctrlrange="0 0.69" gear="1" joint="arm_lift_joint" />
+      <velocity name="armliftctrl_vel" kv="35" ctrllimited="true" ctrlrange="-1.0 1.0" gear="1" joint="arm_lift_joint" />
+
+      <position name="armrollctrl_pos" kp="35" ctrllimited="true" ctrlrange="-1.919 3.665" gear="1" joint="arm_roll_joint" />
+      <velocity name="armrollctrl_vel" kv="35" ctrllimited="true" ctrlrange="-1.0 1.0" gear="1" joint="arm_roll_joint" />
+
+      <position name="wristflexctrl_pos" kp="35" ctrllimited="true" ctrlrange="-1.919 1.221" gear="1" joint="wrist_flex_joint" />
+      <velocity name="wristflexctrl_vel" kv="35" ctrllimited="true" ctrlrange="-1.0 1.0" gear="1" joint="wrist_flex_joint" />
+
+      <position name="wristrollctrl_pos" kp="35" ctrllimited="true" ctrlrange="-1.919 3.665" gear="1" joint="wrist_roll_joint" />
+      <velocity name="wristrollctrl_vel" kv="35" ctrllimited="true" ctrlrange="-1.0 1.0" gear="1" joint="wrist_roll_joint" />
+
+      <position name="leftfingerctrl_pos" kp="120" ctrllimited="true" ctrlrange="0 1.239" gear="1" joint="hand_l_proximal_joint" />
+      <velocity name="leftfingerctrl_vel" kv="120" ctrllimited="true" ctrlrange="-1.0 1.0" gear="1" joint="hand_l_proximal_joint" />
+
+      <position name="rightfingerctrl_pos" kp="120" ctrllimited="true" ctrlrange="0 1.239" gear="1" joint="hand_r_proximal_joint" />
+      <velocity name="rightfingerctrl_vel" kv="120" ctrllimited="true" ctrlrange="-1.0 1.0" gear="1" joint="hand_r_proximal_joint" />
     </actuator>
 </mujoco>
