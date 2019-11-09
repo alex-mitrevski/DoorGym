@@ -23,6 +23,9 @@
         <body childclass="robot" name="hsr" pos="0.63 -0.25 -0.05" euler="0 0 3.14">
             <geom type="mesh" mesh="base" />
             <geom pos="0.1675 0 0.1844" type="mesh" mesh="laser" />
+            <joint name="base_link_x_joint" type="slide" pos="0 0 0" range="-100000000 100000000" axis="1 0 0" />
+            <joint name="base_link_y_joint" type="slide" pos="0 0 0" range="-100000000 100000000" axis="0 1 0" />
+            <joint name="base_link_theta_joint" pos="0 0 0" range="-3.14 3.14" axis="0 0 1" />
             <body name="base_roll_link" pos="0 0 0">
                 <inertial pos="-0.019482 0.002191 0.071013" quat="-0.163088 0.695987 0.176074 0.676759" mass="10.2394" diaginertia="0.145076 0.0958414 0.0713624" />
                 <joint name="base_roll_joint" pos="0 0 0" axis="0 0 1" range="-3.14 3.14" damping="0.7" />
@@ -184,5 +187,14 @@
 
       <position name="rightfingerctrl_pos" kp="120" ctrllimited="true" ctrlrange="0 1.239" gear="1" joint="hand_r_proximal_joint" />
       <velocity name="rightfingerctrl_vel" kv="120" ctrllimited="true" ctrlrange="-1.0 1.0" gear="1" joint="hand_r_proximal_joint" />
+
+      <position name="baselinkx_pos" kp="120" ctrllimited="true" ctrlrange="-1 1" gear="1" joint="base_link_x_joint" />
+      <velocity name="baselinkx_vel" kv="120" ctrllimited="true" ctrlrange="-1 1" gear="1" joint="base_link_x_joint" />
+
+      <position name="baselinky_pos" kp="120" ctrllimited="true" ctrlrange="-1 1" gear="1" joint="base_link_y_joint" />
+      <velocity name="baselinky_vel" kv="120" ctrllimited="true" ctrlrange="-1 1" gear="1" joint="base_link_y_joint" />
+
+      <position name="baselinktheta_pos" kp="120" ctrllimited="true" ctrlrange="-3.14 3.14" gear="1" joint="base_link_theta_joint" />
+      <velocity name="baselinktheta_vel" kv="120" ctrllimited="true" ctrlrange="-3.14 3.14" gear="1" joint="base_link_theta_joint" />
     </actuator>
 </mujoco>
