@@ -20,7 +20,7 @@
         <mesh name="r_distal" file="../../robot/STL/HSR/r_distal.stl" />
     </asset>
     <worldbody>
-        <body childclass="robot" name="hsr" pos="1.0 0 0" euler="0 0 3.14">
+        <body childclass="robot" name="hsr" pos="0.63 -0.25 -0.05" euler="0 0 3.14">
             <geom type="mesh" mesh="base" />
             <geom pos="0.1675 0 0.1844" type="mesh" mesh="laser" />
             <body name="base_roll_link" pos="0 0 0">
@@ -80,7 +80,7 @@
                     </body>
                 </body>
             </body>
-            <body name="arm_lift_link" pos="0 0 0.34">
+            <body name="arm_lift_link" pos="0 0 0.7" euler="0 0.5 0">
                 <inertial pos="0.051549 0.042438 -0.064145" quat="-0.111496 0.499152 -0.110462 0.852182" mass="1.27582" diaginertia="0.00909548 0.00799354 0.00328099" />
                 <joint name="arm_lift_joint" pos="0 0 0" axis="0 0 1" type="slide" limited="true" range="0 0.69" damping="1" />
                 <geom type="mesh" mesh="shoulder" />
@@ -92,7 +92,7 @@
                         <inertial pos="-0.006927 0.002039 -0.064837" quat="0.704471 0.707171 -0.0444888 0.0406182" mass="0.247936" diaginertia="0.00426928 0.00411787 0.00078077" />
                         <joint name="arm_roll_joint" pos="0 0 0" axis="0 0 1" limited="true" range="-2.09 3.84" damping="0.1" />
                         <geom type="mesh" mesh="arm_roll" />
-                        <body name="wrist_flex_link" pos="0 0 0">
+                        <body name="wrist_flex_link" pos="0 0 0" euler="0 0.9 1.57">
                             <inertial pos="0.000131 -0.003929 0.00217" quat="0.672298 0.740248 0.0055614 0.00418043" mass="0.681225" diaginertia="7.43604e-05 6.49274e-05 3.81796e-05" />
                             <joint name="wrist_flex_joint" pos="0 0 0" axis="0 -1 0" limited="true" range="-1.92 1.22" damping="1" />
                             <geom size="0.017 0.02" pos="0 0 0.03" type="cylinder" rgba="0.33 0.33 0.33 1" />
@@ -102,7 +102,7 @@
                                 <body name="wrist_ft_sensor_frame" pos="0 0 0.0735" quat="0 1 0 0">
                                     <inertial pos="0.000192679 0.0012513 -0.0186234" quat="0.931239 -0.00517143 -0.0292254 0.363198" mass="0.941692" diaginertia="0.0193002 0.0192663 0.0184886" />
 
-                                    <!-- The following joint needs to have high stiffness; otherwise, it causes the wrist to fall unnaturally along the y-axis of the base frame --> 
+                                    <!-- The following joint needs to have high stiffness; otherwise, it causes the wrist to fall unnaturally along the y-axis of the base frame -->
                                     <joint name="wrist_ft_sensor_frame_joint" pos="0 0 0" axis="1 0 0" range="-3.14 3.14" stiffness="100" />
 
                                     <geom pos="0 0 0.0735" quat="0 -1 0 0" type="mesh" mesh="wrist_roll" />
