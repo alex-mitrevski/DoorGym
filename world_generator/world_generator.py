@@ -43,7 +43,7 @@ def main(dataset_file):
         robot_type = "hsr"
     else:
         raise Exception("robot type not recognized")
-    
+
     ###################### Randomize Parameters ######################
     # Lighting property
     light_n=randrange(2,6)
@@ -99,7 +99,7 @@ def main(dataset_file):
     frame_rgba = [randrange(70,85)/100.0, randrange(70,85)/100.0, randrange(70,85)/100.0, 1.0]
     frame_material = material_name_list[randrange(0,3)]
 
-    # Door Frame Joint Property  
+    # Door Frame Joint Property
     door_frame_damper = randrange(10, 20)/10.0
     door_frame_spring = randrange(10, 20)/100.0
     door_frame_frictionloss = randrange(0,1)
@@ -113,7 +113,7 @@ def main(dataset_file):
     # Swtich Camera1 position depending on the hinge location
     if hinge_loc == "lefthinge":
          camera_poses[0] = [0.99, 0.5, 1.0] #1m x 1m
-    
+
     # Opening direction
     if args.pulldoor_ratio > randrange(0,100)/100.0:
         opendir = "pull"
@@ -124,9 +124,9 @@ def main(dataset_file):
     door_height = randrange(2000, 2500)/1000.0
     door_width = randrange(750, 1200)/1000.0
     door_thickness = randrange(20, 30)/1000.0
-    knob_height = randrange(900, 1100)/1000.0 # legal height of the door knob is 864mm to 1219mm
+    knob_height = randrange(300, 800)/1000.0 # legal height of the door knob is 864mm to 1219mm
     knob_horizontal_location_ratio = randrange(10,20)/100.0 #height-ratio and from-side-ratio of knob
-    door_mass = door_height*door_width*door_thickness*randrange(200,300) # Density of MDF is in range of 500-1000kg/m^3 
+    door_mass = door_height*door_width*door_thickness*randrange(200,300) # Density of MDF is in range of 500-1000kg/m^3
     door_rgba = [randrange(1,100)/100.0, randrange(1,100)/100.0, randrange(1,100)/100.0, 1.0]
     door_material = material_name_list[randrange(0,3)]
 
@@ -249,7 +249,7 @@ def main(dataset_file):
         door_frame_joint_pos = [0,door_width-door_width*knob_horizontal_location_ratio,0]
     else:
         door_frame_joint_pos = [0,-door_width*knob_horizontal_location_ratio,0]
-    
+
     # Door property
     door_diaginertia = [door_mass/12.0*(door_height**2+door_width**2),
                         door_mass/12.0*(door_height**2+door_thickness**2),
@@ -269,12 +269,12 @@ def main(dataset_file):
     knob_door_joint_pos = [0,0,0]
     knob_door_armature = 0.0001
     knob_door_limited = True
-    knob_door_range = [-knob_rot_range, knob_rot_range]
+    knob_door_range = [-knob_rot_range, 0] # the upper limit is 0 since we don't want the handle to move up
     latch_thickness = 0.015
     latch_height = 0.05
     latch_width = door_width * knob_horizontal_location_ratio + frame_width/3.0
     latch_gap = latch_thickness*1.25
-    
+
     # Knob property
     if knob_type == "pull":
         knob_pos = [door_thickness/2-0.006,0,0]
@@ -363,7 +363,7 @@ def main(dataset_file):
     v_global = v.Global(
         offwidth=256,
         offheight=256
-    )  
+    )
     visual_list.append(v_map)
     visual_list.append(v_quality)
     visual_list.append(v_global)
@@ -512,7 +512,7 @@ def main(dataset_file):
             fovy=camera_fieldview + camera_fieldview_noise[i],
             pos=camera_poses[i],
             euler=camera_ories[i]))
-    
+
     ####### All body obj #######
     body0 = e.Body(
         name='wall_link',
@@ -551,7 +551,7 @@ def main(dataset_file):
         diaginertia=wall_diaginertia)
 
     body0_geoms = []
-    name = 'wall_{}'  
+    name = 'wall_{}'
     for i in range(wall_parts_n):
         body0_geoms.append(e.Geom(
             name=name.format(i),
@@ -627,7 +627,7 @@ def main(dataset_file):
         type="box",
         euler=door_euler
         )]
-    
+
     body2_children_list = [body2_joints]
     body2_children_list.extend(body2_geoms)
     body2_children_list.extend([body2_inertial])
@@ -647,7 +647,7 @@ def main(dataset_file):
             axis=axes[i],
             armature=0,
             stiffness=0,
-            damping=30000,
+            damping=300000,
             frictionloss=0,
             limited="true",
             range=ranges[i]))
@@ -685,7 +685,7 @@ def main(dataset_file):
             material=doorknob_material,
             mesh=mesh.format(i),
             euler=knob_euler,
-            friction=knob_surface_friction))    
+            friction=knob_surface_friction))
     if knob_type != "pull":
         body4_geoms.append(
             e.Geom(
@@ -700,11 +700,11 @@ def main(dataset_file):
         mass=knob_mass,
         diaginertia=knob_diaginertia)
 
-    body4_children_list = body4_geoms 
+    body4_children_list = body4_geoms
     if knob_type != "pull":
         body4_children_list.extend([body4_inertial])
     body4.add_children(body4_children_list)
-    
+
     ######## Write file to Output folder ########
     model_xml = mujoco.xml()
     name = '{0}_{1}_{2}.xml'
@@ -748,6 +748,3 @@ if __name__ == '__main__':
             pbar = tqdm(os.listdir(args.input_dirname.format(knob_type)))
             for dataset_file in pbar:
                 main(dataset_file)
-
-    
-
